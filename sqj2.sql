@@ -1,0 +1,48 @@
+CREATE TABLE IF NOT EXISTS tst.Genre(
+id SERIAL PRIMARY KEY,
+title VARCHAR(40) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS tst.Singer(
+id SERIAL PRIMARY KEY,
+name VARCHAR(80) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tst.SingerGenre(
+id SERIAL PRIMARY KEY,
+genre_id INTEGER NOT NULL REFERENCES tst.Genre(id),
+singer_id INTEGER NOT NULL REFERENCES tst.Singer(id)
+);
+
+CREATE TABLE IF NOT EXISTS tst.Album(
+id SERIAL PRIMARY KEY,
+name VARCHAR(60),
+pub_year INTEGER CHECK (pub_year > 1960)
+);
+
+CREATE TABLE IF NOT EXISTS tst.SingerAlbum(
+id SERIAL PRIMARY KEY,
+singer_id INTEGER NOT NULL REFERENCES tst.Singer(id),
+album_id INTEGER NOT NULL REFERENCES tst.Album(id)
+);
+
+CREATE TABLE IF NOT EXISTS tst.Track(
+id SERIAL PRIMARY KEY,
+name VARCHAR(40) NOT NULL,
+duration_sek INTEGER CHECK (duration > 0),
+album_id INTEGER NOT NULL REFERENCES tst.Album(id)
+);
+
+CREATE TABLE IF NOT EXISTS tst.Collection(
+id SERIAL PRIMARY KEY,
+name VARCHAR(40),
+pub_year INTEGER CHECK (pub_year > 1960)
+);
+
+CREATE TABLE IF NOT EXISTS tst.CollectionTrack(
+id SERIAL PRIMARY KEY,
+collection_id INTEGER NOT NULL REFERENCES tst.Collection(id),
+track_id INTEGER NOT NULL REFERENCES tst.Track(id)
+);
+
+
